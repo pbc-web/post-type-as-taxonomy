@@ -16,6 +16,6 @@ Also register the taxonomy
 
 	$args = array(
 		'hierarchical' => true,
-		'label'        => 'Post type',
+		'label'        => 'Taxonomy name',
 	);
 	register_taxonomy( $taxonomy, $post_type, $args );
