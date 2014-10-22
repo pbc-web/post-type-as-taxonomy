@@ -166,4 +166,4 @@ class TP_Post_Type_As_Taxonomy {
 		
 		if(is_object($posts[0])) return $posts[0];
 	}
-} new TP_Post_Type_As_Taxonomy;
+}
