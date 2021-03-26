@@ -3,7 +3,7 @@
  * Plugin Name: Post type as taxonomy
  * Description: Project a post type as a taxonomy.
  */
- 
+
 class TP_Post_Type_As_Taxonomy {
 
 	/**
@@ -30,7 +30,7 @@ class TP_Post_Type_As_Taxonomy {
 	 *
 	 * @var array
 	 */
-	public $post_types = [];
+	private $post_types = [];
 
 	/**
 	 * Inits the class and registers the init call.
@@ -39,7 +39,6 @@ class TP_Post_Type_As_Taxonomy {
 	 */
 	public function __construct() {
 		add_action( 'init', [ $this, 'init' ], 11 );
-
 		add_action( 'save_post', [ $this, 'update' ] );
 		add_action( 'untrashed_post', [ $this, 'update' ] );
 		add_action( 'trashed_post', [ $this, 'delete' ] );
@@ -51,13 +50,12 @@ class TP_Post_Type_As_Taxonomy {
 	 * @return void
 	 */
 	public function init() {
-
 		$post_types = get_post_types();
 
 		if ( ! $post_types ) {
 			return;
 		}
-		
+
 		foreach ( $post_types as $post_type ) {
 			$post_type = get_post_type_object( $post_type );
 
@@ -238,14 +236,16 @@ class TP_Post_Type_As_Taxonomy {
 	 * @param object $term The linked term.
 	 */
 	public function get_post( $term ) {
-		$posts = get_posts(
+		$query = new WP_Query(
 			[
 				'post_type'   => 'any',
 				'meta_key'    => 'term_id',
 				'meta_value'  => $term->term_id,
-				'numberposts' => 1,
+				'posts_per_page' => 1,
 			]
 		);
+
+		$posts = $query->posts;
 
 		if ( is_object( $posts[0] ) ) {
 			return $posts[0];
